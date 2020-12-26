@@ -1,0 +1,13 @@
+---
+
+- name: Template configuration file
+  local_action:
+    module: ansible.builtin.template
+    src: config.j2
+    dest: '{{ edgeos_router__temporary_filebase }}-config.txt'
+  check_mode: false
+
+- name: Push configuration to router
+  community.network.edgeos_config:
+    src: '{{ edgeos_router__temporary_filebase }}-config.txt'
+    save: true

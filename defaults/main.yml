@@ -1,0 +1,72 @@
+---
+# defaults file for turgon37.edgeos_router
+
+# Default services enable statuses
+edgeos_router__services_enabled_default:
+  gui: true
+  ssh: true
+
+# Services enable status' intented to be used at global level
+edgeos_router__services_enabled_global: {}
+# Services enable status' intented to be used at hostgroup level
+edgeos_router__services_enabled_group: {}
+# Services enable status' intented to be used at host level
+edgeos_router__services_enabled_host: {}
+
+edgeos_router__services_enabled: '{{
+    edgeos_router__services_enabled_default
+    |combine(edgeos_router__services_enabled_global, recursive=true)
+    |combine(edgeos_router__services_enabled_group, recursive=true)
+    |combine(edgeos_router__services_enabled_host, recursive=true)
+  }}'
+
+# Default services options
+edgeos_router__services_options_default:
+  gui:
+    http-port: 80
+    https-port: 443
+    older-ciphers: enable
+  ssh:
+    port: 22
+    protocol-version: v2
+
+# Services options map intented to be used at global level
+edgeos_router__services_options_global: {}
+# Services options map intented to be used at hostgroup level
+edgeos_router__services_options_group: {}
+# Services options map intented to be used at host level
+edgeos_router__services_options_host: {}
+
+edgeos_router__services_options: '{{
+    edgeos_router__services_options_default
+    |combine(edgeos_router__services_options_global, recursive=true)
+    |combine(edgeos_router__services_options_group, recursive=true)
+    |combine(edgeos_router__services_options_host, recursive=true)
+  }}'
+
+# Default services options
+edgeos_router__system_options_default:
+  analytics-handler:
+    send-analytics-report: true
+  crash-handler:
+    send-crash-report: true
+
+# system options map intented to be used at global level
+edgeos_router__system_options_global: {}
+# system options map intented to be used at hostgroup level
+edgeos_router__system_options_group: {}
+# system options map intented to be used at host level
+edgeos_router__system_options_host: {}
+
+edgeos_router__system_options: '{{
+    edgeos_router__system_options_default
+    |combine(edgeos_router__system_options_global, recursive=true)
+    |combine(edgeos_router__system_options_group, recursive=true)
+    |combine(edgeos_router__system_options_host, recursive=true)
+  }}'
+
+edgeos_router__service_ubnt_discover: true
+edgeos_router__service_unms: true
+
+# Store produced config into this path on the ansible controler
+edgeos_router__temporary_filebase: '/tmp/{{ inventory_hostname }}'

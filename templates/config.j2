@@ -1,0 +1,22 @@
+{%- import '_macros.j2' as macros with context -%}
+set system host-name {{ inventory_hostname }}
+set system time-zone {{ _timezone }}
+
+{% for service in edgeos_router__services_enabled.keys() %}
+{%   if edgeos_router__services_enabled[service]|d(true) %}
+{%     for key, value in edgeos_router__services_options[service]|d({})|dictsort %}
+set service {{ service }} {{ key }} {{ macros.stringOrBool(value) }}
+{%     endfor %}
+{%   else %}
+delete service {{ service }}
+{%   endif %}
+{% endfor %}
+
+{{ edgeos_router__service_ubnt_discover|ternary('delete', 'set') }} service ubnt-discover disable
+{{ edgeos_router__service_unms|ternary('delete', 'set') }} service unms disable
+
+{% for subsystem in edgeos_router__system_options.keys() %}
+{%   for key, value in edgeos_router__system_options[subsystem]|d({})|dictsort %}
+set system {{ subsystem }} {{ key }} {{ macros.stringOrBool(value) }}
+{%   endfor %}
+{% endfor %}

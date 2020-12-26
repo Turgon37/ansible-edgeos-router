@@ -1,0 +1,9 @@
+---
+
+- name: Gather facts from the device
+  community.network.edgeos_facts:
+    gather_subset: 'all'
+
+- name: Assert required variables
+  assert:
+    that: []

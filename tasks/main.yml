@@ -1,0 +1,10 @@
+---
+# tasks file for turgon37.edgeos_router
+
+- name: Importing initialization tasks
+  import_tasks: init.yml
+  tags: ['always']
+
+- name: Importing configuration tasks
+  import_tasks: configure.yml
+  tags: ['edgeos_router', 'edgeos_router-configure']

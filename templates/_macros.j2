@@ -1,0 +1,20 @@
+{#
+ # Produce a boolean value in vyatta format
+ #
+ # @param value : the value of the boolean
+ # @return string
+ #}
+{%- macro bool(value, default=None) -%}
+{{ value|bool|ternary('true', 'false') }}
+{%- endmacro -%}
+
+{#
+ # Filter for parameters that accepts
+ # boolean and string values
+ #
+ # @param value : the value of the parameter
+ # @return string
+ #}
+{%- macro stringOrBool(value) -%}
+{{ value if (value is string or value|string == value|int|string) else bool(value) }}
+{%- endmacro -%}
