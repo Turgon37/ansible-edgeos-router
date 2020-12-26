@@ -18,7 +18,7 @@ jobs:
         ansible-version: ['2.10.*']
     steps:
       - name: Install Python
-        run: actions/setup-python
+        run: actions/setup-python@v2
 
       - name: Install dependencies
         run: >
