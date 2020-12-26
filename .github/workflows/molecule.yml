@@ -1,0 +1,36 @@
+name: Molecule
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test_molecule:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ansible-version: ['2.10.*']
+    steps:
+      - name: Install Python
+        run: actions/setup-python
+
+      - name: Install dependencies
+        run: >
+          pip install
+          ansible==${{ matrix.ansible-version }}
+          'ansible-lint>=3.4.15'
+          docker
+          'molecule>=2.13.0'
+          'testinfra>=1.7.0'
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Molecule Test
+        run: molecule test --all
