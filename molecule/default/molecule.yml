@@ -1,0 +1,26 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: delegated
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+  flake8
+platforms:
+  - name: vyos
+    image: 2stacks/vyos:latest
+    command: /sbin/init
+    privileged: true
+    volumes:
+      - /lib/modules:/lib/modules:ro
+provisioner:
+  name: ansible
+  options:
+    v: true
+    diff: true
+scenario:
+  name: default
+verifier:
+  name: ansible
