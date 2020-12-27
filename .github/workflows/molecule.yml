@@ -16,21 +16,25 @@ jobs:
       fail-fast: false
       matrix:
         ansible-version: ['2.10.*']
+        molecule-scenario: ['default']
+        python-version: ['3.x']
     steps:
       - name: Install Python
         uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: 'x64'
 
       - name: Install dependencies
         run: >
           pip install
           ansible==${{ matrix.ansible-version }}
-          'ansible-lint>=3.4.15'
+          'ansible-lint==4.*'
           docker
-          'molecule>=2.13.0'
-          'testinfra>=1.7.0'
+          'molecule==3.2.*'
 
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Molecule Test
-        run: molecule test --all
+        run: molecule test --scenario-name ${{ matrix.molecule-scenario }}
